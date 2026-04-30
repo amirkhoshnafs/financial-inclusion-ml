@@ -32,3 +32,7 @@ figures/*.svg
 # Keep folders
 !models/.gitkeep
 !figures/.gitkeep
+
+# Raw downloaded documentation
+references/raw_docs/*
+!references/raw_docs/.gitkeep
