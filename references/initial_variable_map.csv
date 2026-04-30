@@ -1,0 +1,53 @@
+raw_column,clean_name,role,include_in_model,include_in_eda,needs_codebook_check,notes
+year,year,metadata,no,yes,no,Survey year
+economy,economy,group,no,yes,no,Country or economy name
+economycode,economy_code,group,no,yes,no,Country or economy code
+regionwb,region,group,optional,yes,no,World Bank region
+pop_adult,adult_population,metadata,no,yes,yes,Adult population context variable
+wpid_random,respondent_id,id,no,no,no,Random respondent identifier
+wgt,survey_weight,weight,no,yes,yes,Use for weighted descriptive statistics
+female,gender_raw,predictor,yes,yes,yes,Need to confirm whether 1 or 2 represents female
+age,age,predictor,yes,yes,no,Respondent age
+educ,education_raw,predictor,yes,yes,yes,Need education value labels
+inc_q,income_quintile,predictor,yes,yes,yes,Within-country income quintile
+emp_in,employment_raw,predictor,yes,yes,yes,Need employment value labels
+urbanicity,urbanicity_raw,predictor,yes,yes,yes,Need urban/rural value labels
+account_fin,financial_institution_account,component,no,yes,no,Component of account ownership
+account_mob,mobile_money_account,component,no,yes,yes,Mobile money may be unavailable or not applicable in some economies
+account,has_account,target,no,yes,no,Main supervised learning target
+dig_account,digital_account_outcome,descriptive_outcome,no,yes,yes,Do not use as predictor for account ownership
+borrowed,borrowed_outcome,descriptive_outcome,no,yes,yes,Do not use as predictor for account ownership
+saved,saved_outcome,descriptive_outcome,no,yes,yes,Do not use as predictor for account ownership
+receive_wages,received_wages_outcome,descriptive_outcome,no,yes,yes,Possible downstream account-use outcome
+receive_transfers,received_transfers_outcome,descriptive_outcome,no,yes,yes,Possible downstream account-use outcome
+receive_pensions,received_pensions_outcome,descriptive_outcome,no,yes,yes,Possible downstream account-use outcome
+receive_agriculture,received_agriculture_outcome,descriptive_outcome,no,yes,yes,Possible downstream account-use outcome
+merchantpay_dig,digital_merchant_payment,descriptive_outcome,no,yes,yes,Digital payment outcome
+pay_utilities,paid_utilities_outcome,descriptive_outcome,no,yes,yes,Payment outcome
+domestic_remittances,domestic_remittances_outcome,descriptive_outcome,no,yes,yes,Remittance outcome
+anydigpayment,any_digital_payment,descriptive_outcome,no,yes,yes,Do not use as predictor for account ownership
+internet_use,internet_use,predictor,yes,yes,yes,Need to confirm definition
+fin2,fin2_unknown,unknown,no,no,yes,Map with codebook
+fin3,fin3_unknown,unknown,no,no,yes,Map with codebook
+fin4,fin4_unknown,unknown,no,no,yes,Map with codebook
+fin5,fin5_unknown,unknown,no,no,yes,Map with codebook
+fin6,fin6_unknown,unknown,no,no,yes,Map with codebook
+fin7,fin7_unknown,unknown,no,no,yes,Map with codebook
+fin8,fin8_unknown,unknown,no,no,yes,Map with codebook
+fin9a,fin9a_unknown,unknown,no,no,yes,Map with codebook
+fin9b,fin9b_unknown,unknown,no,no,yes,Map with codebook
+fin10,fin10_unknown,unknown,no,no,yes,Map with codebook
+fh1,fh1_unknown,unknown,no,no,yes,Map with codebook
+fh2,fh2_unknown,unknown,no,no,yes,Map with codebook
+fh2a,fh2a_unknown,unknown,no,no,yes,Map with codebook
+con1,con1_unknown,connectivity_unknown,no,no,yes,Map with connectivity questionnaire
+con2a,con2a_unknown,connectivity_unknown,no,no,yes,Map with connectivity questionnaire
+con2b,con2b_unknown,connectivity_unknown,no,no,yes,Map with connectivity questionnaire
+con2c,con2c_unknown,connectivity_unknown,no,no,yes,Map with connectivity questionnaire
+con2d,con2d_unknown,connectivity_unknown,no,no,yes,Map with connectivity questionnaire
+con2e,con2e_unknown,connectivity_unknown,no,no,yes,Map with connectivity questionnaire
+con2f,con2f_unknown,connectivity_unknown,no,no,yes,Map with connectivity questionnaire
+con2g,con2g_unknown,connectivity_unknown,no,no,yes,Map with connectivity questionnaire
+con3,con3_unknown,connectivity_unknown,no,no,yes,Map with connectivity questionnaire
+con4,con4_unknown,connectivity_unknown,no,no,yes,Map with connectivity questionnaire
+con5,con5_unknown,connectivity_unknown,no,no,yes,Map with connectivity questionnaire
