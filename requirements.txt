@@ -1,0 +1,15 @@
+pandas
+numpy
+pyarrow
+openpyxl
+pyreadstat
+matplotlib
+plotly
+scikit-learn
+lightgbm
+shap
+streamlit
+joblib
+requests
+jupyter
+ipykernel
