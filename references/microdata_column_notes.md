@@ -96,3 +96,24 @@ anydigpayment
 These missing values should not be automatically treated as zero.
 
 They may represent module skip patterns, non-applicable questions, or country/module differences.
+## Confirmed value labels
+
+| Column | Confirmed labels |
+|---|---|
+| `female` | 1 = women, 2 = men |
+| `educ` | 1 = primary school or less, 2 = secondary school, 3 = tertiary education or more |
+| `inc_q` | within-economy household income quintile, 1 to 5 |
+| `emp_in` | 1 = in workforce, 2 = out of workforce |
+| `urbanicity` | 1 = rural, 2 = urban |
+| `account` | 1 = has account, 0 = does not have account |
+| `internet_use` | constructed from `con24` and `con25`; exact construction still needs detail |
+
+## Cleaning implications
+
+- Create `is_female` from `female == 1`.
+- Create `is_urban` from `urbanicity == 2`.
+- Keep `educ` as an ordered categorical variable.
+- Keep `inc_q` as an ordered categorical variable.
+- Create `is_employed` from `emp_in == 1`.
+- Use `account` directly as `has_account`.
+- Use `internet_use` as a first-pass predictor, but document its construction.

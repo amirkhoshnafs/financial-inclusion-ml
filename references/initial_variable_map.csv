@@ -6,15 +6,15 @@ regionwb,region,group,optional,yes,no,World Bank region
 pop_adult,adult_population,metadata,no,yes,yes,Adult population context variable
 wpid_random,respondent_id,id,no,no,no,Random respondent identifier
 wgt,survey_weight,weight,no,yes,yes,Use for weighted descriptive statistics
-female,gender_raw,predictor,yes,yes,yes,Need to confirm whether 1 or 2 represents female
+female,gender_raw,predictor,yes,yes,no,"Confirmed labels: 1=women, 2=men. Clean as is_female = female == 1."
 age,age,predictor,yes,yes,no,Respondent age
-educ,education_raw,predictor,yes,yes,yes,Need education value labels
-inc_q,income_quintile,predictor,yes,yes,yes,Within-country income quintile
-emp_in,employment_raw,predictor,yes,yes,yes,Need employment value labels
-urbanicity,urbanicity_raw,predictor,yes,yes,yes,Need urban/rural value labels
+educ,education_raw,predictor,yes,yes,no,"Confirmed labels: 1=primary or less, 2=secondary, 3=tertiary or more."
+inc_q,income_quintile,predictor,yes,yes,yes,"Confirmed: within-economy household income quintile, 1 to 5. Direction still needs final confirmation, likely 1=poorest and 5=richest."
+emp_in,employment_raw,predictor,yes,yes,no,"Confirmed labels: 1=in workforce, 2=out of workforce."
+urbanicity,urbanicity_raw,predictor,yes,yes,no,"Confirmed labels: 1=rural, 2=urban. Clean as is_urban = urbanicity == 2."
 account_fin,financial_institution_account,component,no,yes,no,Component of account ownership
 account_mob,mobile_money_account,component,no,yes,yes,Mobile money may be unavailable or not applicable in some economies
-account,has_account,target,no,yes,no,Main supervised learning target
+account,has_account,target,no,yes,no,"Confirmed target labels: 1=has account, 0=no account."
 dig_account,digital_account_outcome,descriptive_outcome,no,yes,yes,Do not use as predictor for account ownership
 borrowed,borrowed_outcome,descriptive_outcome,no,yes,yes,Do not use as predictor for account ownership
 saved,saved_outcome,descriptive_outcome,no,yes,yes,Do not use as predictor for account ownership
@@ -26,7 +26,7 @@ merchantpay_dig,digital_merchant_payment,descriptive_outcome,no,yes,yes,Digital 
 pay_utilities,paid_utilities_outcome,descriptive_outcome,no,yes,yes,Payment outcome
 domestic_remittances,domestic_remittances_outcome,descriptive_outcome,no,yes,yes,Remittance outcome
 anydigpayment,any_digital_payment,descriptive_outcome,no,yes,yes,Do not use as predictor for account ownership
-internet_use,internet_use,predictor,yes,yes,yes,Need to confirm definition
+internet_use,internet_use,predictor,yes,yes,yes,Constructed from con24 and con25. Exact construction still needs detail; usable as first-pass predictor.
 fin2,fin2_unknown,unknown,no,no,yes,Map with codebook
 fin3,fin3_unknown,unknown,no,no,yes,Map with codebook
 fin4,fin4_unknown,unknown,no,no,yes,Map with codebook
