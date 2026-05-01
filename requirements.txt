@@ -13,3 +13,4 @@ joblib
 requests
 jupyter
 ipykernel
+tabulate
