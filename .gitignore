@@ -36,3 +36,8 @@ figures/*.svg
 # Raw downloaded documentation
 references/raw_docs/*
 !references/raw_docs/.gitkeep
+# Generated data
+/data/interim/*
+/data/processed/*
+!/data/interim/.gitkeep
+!/data/processed/.gitkeep
