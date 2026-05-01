@@ -1,15 +1,10 @@
 pandas
 numpy
 pyarrow
-openpyxl
-pyreadstat
 matplotlib
-plotly
 scikit-learn
 shap
-streamlit
 joblib
-requests
 jupyter
 ipykernel
 tabulate

@@ -2,7 +2,7 @@
 
 ## Main question
 
-Which groups are financially excluded, what predicts financial inclusion, and which policy intervention would likely help most?
+Which groups are financially excluded, what predicts financial inclusion, and which intervention appears most plausible to test?
 
 ## Questions
 
