@@ -38,7 +38,7 @@ The default threshold is 0.5:
 
 ## Candidate thresholds
 
-Candidate thresholds are selected using simple practical constraints so the report does not recommend extreme endpoints.
+These candidate thresholds are not universal best settings. They are just useful operating points for different program tradeoffs.
 
 ### Reach-oriented threshold
 
@@ -46,7 +46,7 @@ Candidate thresholds are selected using simple practical constraints so the repo
 - excluded recall: 81.9%
 - excluded precision: 49.3%
 
-Use this when the policy goal is to reach as many excluded people as possible.
+Use this when the priority is broad outreach and the program can tolerate more false positives.
 
 ### Efficiency-oriented threshold
 
@@ -54,7 +54,7 @@ Use this when the policy goal is to reach as many excluded people as possible.
 - excluded precision: 70.2%
 - excluded recall: 30.5%
 
-Use this when the policy goal is to avoid targeting people who are already included.
+Use this when the priority is targeting efficiency and the program can only follow up on a smaller group.
 
 ### Balanced threshold
 
@@ -62,7 +62,7 @@ Use this when the policy goal is to avoid targeting people who are already inclu
 - excluded precision: 52.5%
 - excluded recall: 74.4%
 
-Use this when the project needs a compromise between reach and targeting efficiency.
+Use this when the project needs a middle ground between reach and targeting efficiency.
 
 ## Interpretation
 
@@ -70,10 +70,10 @@ Lower thresholds predict more people as account owners and fewer people as exclu
 
 Higher thresholds predict fewer people as account owners and more people as excluded.
 
-Because the project focuses on financial exclusion, threshold choice should be tied to policy goals rather than selected only from default model settings.
+Because the project focuses on financial exclusion, threshold choice should be tied to the intervention design rather than left at the library default.
 
 ## Recommendation
 
-Use XGBoost probabilities for ranking risk of exclusion rather than relying only on the default 0.5 threshold.
+Use the XGBoost scores mainly for ranking exclusion risk, then pick a threshold that matches budget and outreach constraints.
 
 For the portfolio project, report the default threshold metrics but also show the threshold tradeoff table.

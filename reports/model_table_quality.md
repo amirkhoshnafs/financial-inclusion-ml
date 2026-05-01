@@ -33,13 +33,13 @@ Target distribution:
 
 ## Feature columns
 
-- `is_female`
 - `age`
-- `education_level`
-- `income_quintile`
+- `is_female`
 - `is_employed`
 - `is_urban`
 - `uses_internet`
+- `education_level`
+- `income_quintile`
 - `region`
 
 ## Metadata columns
@@ -53,10 +53,10 @@ Target distribution:
 
 | column | missing |
 |---|---:|
-| `education_level` | 588 |
-| `income_quintile` | 1,020 |
 | `is_employed` | 4,020 |
 | `is_urban` | 2,526 |
+| `education_level` | 588 |
+| `income_quintile` | 1,020 |
 
 ## Leakage controls
 
@@ -71,7 +71,7 @@ Excluded examples:
 - formal borrowing behavior
 - receiving wages, transfers, pensions, or agricultural payments through accounts
 
-This keeps the first baseline model focused on background characteristics rather than financial behaviors that may happen after account ownership.
+I kept the first feature set intentionally limited so the model uses background characteristics rather than behaviors that are likely downstream of already having an account.
 
 ## Current modeling status
 

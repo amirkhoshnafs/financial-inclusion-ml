@@ -9,11 +9,10 @@ This project will include:
 3. Respondent-level prediction of account ownership.
 4. Baseline logistic regression model.
 5. One boosted tree model.
-6. Model evaluation with AUC, precision, recall, F1, and calibration.
+6. Model evaluation with AUC, precision, recall, F1, and threshold tradeoffs.
 7. SHAP explainability.
 8. Country clustering by inclusion profile.
-9. Streamlit dashboard.
-10. Final policy recommendation.
+9. Final policy interpretation with explicit limitations.
 
 ## Out of scope
 
@@ -22,12 +21,13 @@ This project will not include:
 1. Deep learning.
 2. Forecasting.
 3. Full causal inference.
-4. Production MLOps.
-5. Real-time APIs.
-6. Automated retraining.
-7. Complex frontend engineering.
-8. Database setup.
-9. Cloud deployment as a core requirement.
+4. Full calibration work in the current version.
+5. Production MLOps.
+6. Real-time APIs.
+7. Automated retraining.
+8. Complex frontend engineering.
+9. Database setup.
+10. Cloud deployment as a core requirement.
 
 ## Primary target
 
@@ -35,4 +35,4 @@ The main supervised learning target is account ownership.
 
 ## Main caution
 
-This project is descriptive and predictive, not causal.
+This project is descriptive and predictive, not causal, and the current validation setup is designed for a portfolio analysis rather than a deployment claim.

@@ -163,15 +163,15 @@ def main():
         f'- XGBoost improves excluded-class precision by {100 * excluded_precision_diff:.1f} percentage points.',
         f'- XGBoost lowers excluded-class recall by {100 * abs(excluded_recall_diff):.1f} percentage points.',
         '',
-        'This means XGBoost performs better overall, but the default 0.5 threshold changes the policy tradeoff.',
+        'The gain in ranking performance is real, but it is not dramatic enough to make threshold choice irrelevant.',
         '',
-        'XGBoost is more precise when it predicts exclusion, but it misses more actually excluded respondents than the logistic baseline.',
+        'At the default 0.5 threshold, XGBoost is more precise when it predicts exclusion, but it misses more actually excluded respondents than the logistic baseline.',
         '',
         '## Policy interpretation',
         '',
-        'For a policy targeting use case, excluded-class recall matters because missing excluded people means missing people who may need support.',
+        'If the use case is outreach, excluded-class recall matters because missed cases are people the program never reaches.',
         '',
-        'For a limited-budget targeting use case, excluded-class precision matters because false positives may waste resources.',
+        'If the use case is a constrained program budget, excluded-class precision matters because false positives absorb staff time and funds.',
         '',
         'The better threshold depends on the policy goal:',
         '',
@@ -190,7 +190,7 @@ def main():
         '',
         '## Current conclusion',
         '',
-        'XGBoost is the stronger overall model, but threshold tuning is needed before making policy-style targeting claims.',
+        'XGBoost is the better ranking model in this repo, but threshold choice matters more than the raw AUC gap for any targeting use case.',
     ])
 
     OUT_PATH.write_text('\n'.join(lines), encoding='utf-8')

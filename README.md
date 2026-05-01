@@ -1,89 +1,58 @@
 # Financial Inclusion ML
 
-A solo-friendly applied data science project using the World Bank Global Findex 2025 microdata to analyze financial inclusion, predict account ownership, explain model drivers, cluster countries, and recommend policy interventions.
+This repository uses the World Bank Global Findex 2025 microdata to study account ownership as a practical first measure of financial inclusion. The project combines weighted descriptive analysis, a simple classification baseline, a small XGBoost benchmark, threshold analysis, SHAP-based interpretation, country profiling, clustering, and a cautious policy write-up.
 
-## Project question
+I kept the modeling feature set intentionally limited: age, gender, employment, urbanicity, internet use, education, income quintile, and region. That keeps the prediction task interpretable and avoids obvious leakage from variables that are really components or downstream consequences of already having an account.
 
-> Which groups are financially excluded, what predicts inclusion, and which policy intervention would likely help most?
+## Project Question
 
-## Why this project matters
+> Which groups are more likely to be financially excluded, what predicts account ownership, and what intervention looks most plausible to test next?
 
-Financial inclusion is about whether people can access and use useful financial services such as accounts, payments, savings, credit, and tools for managing financial risk.
-
-Account ownership matters because it can connect people to:
-
-- safer storage of money
-- digital payments
-- formal saving
-- formal borrowing
-- wage, transfer, and remittance channels
-- financial resilience during shocks
-
-This project connects financial inclusion with machine learning, explainability, and policy analysis.
-
-## What this repo demonstrates
-
-This repository shows that I can:
-
-- work with real international development survey data
-- document data sources and dataset decisions
-- clean and validate microdata
-- perform weighted exploratory analysis
-- build classification models
-- compare baseline and advanced models
-- analyze threshold tradeoffs for policy targeting
-- use SHAP for explainability
-- cluster countries by inclusion profile
-- translate analysis into a practical policy recommendation
+This is a predictive and descriptive project, not a causal one. The goal is to identify useful patterns and targeting tradeoffs, not to claim that one variable directly causes inclusion.
 
 ## Dataset
 
-Main dataset:
+- Source: World Bank Global Findex 2025 microdata
+- Rows: 144,090 adult respondents
+- Coverage: 140 economies
+- Main target: account ownership
 
-- World Bank Global Findex 2025 microdata
-- 144,090 adult respondents
-- 140 economies
-- account ownership as the main target
-
-The raw microdata is not committed to this repository. The repo includes scripts that reproduce the processed data from the downloaded raw files.
-
-Expected raw file location:
+Expected raw file path:
 
 ```text
 data/raw/global_findex_2025_microdata/findex_microdata_2025_labelled_update112425.csv
 ```
 
-## Target
+### Data Availability
 
-The supervised learning target is account ownership:
+- The raw Global Findex CSV is not tracked by git and should stay out of a public GitHub push.
+- In this local working copy, the raw CSV, raw reference PDFs, processed parquet files, and trained models are present for verification. They are gitignored.
+- A small set of figures is committed so the README and reports remain readable on GitHub.
+- The main recreatable local outputs are `data/interim/microdata_core.parquet`, `data/processed/*.parquet`, `models/*.joblib`, and most report/figure artifacts.
 
-```text
-target = 1: respondent owns an account
-target = 0: respondent does not own an account
-```
+If you are recreating the project locally, put the downloaded raw CSV in `data/raw/global_findex_2025_microdata/` and keep the rest of the large raw/reference files out of version control as well.
 
-Account ownership is used as the core measure of basic financial inclusion.
+## Why Account Ownership
 
-## Methods
+Account ownership is a narrow target, but it is a defensible starting point. It captures basic access to the formal financial system and is much easier to model cleanly than deeper behaviors like saving, borrowing, or digital payments, many of which are partly downstream of already having an account.
 
-The project includes:
+That is also why the model excludes variables such as financial institution account ownership, mobile money ownership, saving, borrowing, and digital payment behavior. Those variables are analytically interesting, but they would blur the line between predictors and outcomes in this specific task.
 
-1. data acquisition documentation
-2. microdata inspection
-3. core data cleaning
-4. weighted EDA
-5. model table construction
-6. logistic regression baseline
-7. XGBoost model
-8. model comparison
-9. threshold analysis
-10. SHAP explainability
-11. country clustering
-12. policy recommendation
+## What the Repo Covers
 
-## Key EDA findings
+1. Raw data inspection and cleaning
+2. Weighted first-pass EDA
+3. Model table construction
+4. Logistic regression baseline
+5. XGBoost benchmark
+6. Threshold tradeoff analysis
+7. SHAP explanations for the XGBoost model
+8. Country profile construction and clustering
+9. A final policy interpretation with explicit caveats
 
-Weighted account ownership is 71.0%.
+## Main Findings
+
+Weighted account ownership in the cleaned microdata is 71.0%.
 
 Account ownership is lower among:
 
@@ -95,28 +64,11 @@ Account ownership is lower among:
 | Internet use | does not use internet | 46.5% | uses internet | 80.0% |
 | Urbanicity | rural | 66.3% | urban | 76.6% |
 
-The strongest observed gaps are education and internet use.
+Education and internet use show the largest gaps in this first pass.
 
-## Selected figures
+## Model Summary
 
-### Account ownership by education
-
-![Account ownership by education](figures/account_by_education.png)
-
-### Account ownership by internet use
-
-![Account ownership by internet use](figures/account_by_internet.png)
-
-### Lowest account ownership countries
-
-![Lowest account ownership countries](figures/lowest_account_countries.png)
-
-## Model results
-
-Two models were trained:
-
-- logistic regression baseline
-- XGBoost advanced model
+Two models are compared on the same compact feature set:
 
 | Metric | Logistic regression | XGBoost |
 |---|---:|---:|
@@ -126,15 +78,9 @@ Two models were trained:
 | Excluded precision | 49.8% | 64.0% |
 | Excluded recall | 77.7% | 47.1% |
 
-XGBoost performs better overall, but logistic regression has higher excluded recall at the default 0.5 threshold.
+XGBoost gives a small ranking lift, but the bigger practical point is threshold choice. At the default `0.5` threshold, the tree model is more precise for finding excluded adults, while the logistic model recalls more of them.
 
-This matters because the project is about financial exclusion, not only overall model performance.
-
-## Threshold analysis
-
-For policy targeting, the default threshold is not always the right choice.
-
-XGBoost threshold analysis shows three useful options:
+For the XGBoost model, three threshold settings are useful illustrations:
 
 | Policy goal | Threshold | Excluded precision | Excluded recall |
 |---|---:|---:|---:|
@@ -142,142 +88,48 @@ XGBoost threshold analysis shows three useful options:
 | Efficiency | 0.40 | 70.2% | 30.5% |
 | Balanced | 0.70 | 52.5% | 74.4% |
 
-Interpretation:
+Those are not universal best thresholds. They are just different operating points for different program constraints.
 
-- use a reach-oriented threshold to find more excluded people
-- use an efficiency-oriented threshold to avoid wasting limited resources
-- use a balanced threshold when both goals matter
+## Country-Level Readout
 
-![XGBoost threshold tradeoff](figures/xgboost_threshold_tradeoff.png)
+The clustering step groups economies into four broad inclusion profiles, from very low inclusion to near-universal account ownership. I treat those clusters as descriptive profiles rather than definitive categories; they depend on the features included in the country profile table and on the choice of four clusters.
 
-## SHAP explainability
-
-The strongest XGBoost prediction drivers are:
-
-1. region context
-2. internet use
-3. employment status
-4. education level
-5. age
-6. income quintile
-7. gender
-8. urbanicity
-
-![SHAP feature importance](figures/shap_feature_importance.png)
-
-These are predictive associations, not causal effects.
-
-## Country clustering
-
-Countries were clustered by financial inclusion profiles derived from the microdata.
-
-The analysis found four broad profiles:
-
-| Cluster profile | Average account rate | Interpretation |
-|---|---:|---|
-| Very low inclusion | 35.2% | broad financial exclusion with large gender gaps |
-| Low/mid inclusion with large inequality gaps | 54.0% | inclusion exists but is uneven across groups |
-| Mid/high inclusion | 76.1% | stronger inclusion but remaining subgroup gaps |
-| Very high inclusion | 95.5% | near-universal account ownership and small gaps |
-
-![Country clusters](figures/country_clusters.png)
-
-## Policy recommendation
-
-The final recommendation is:
-
-> Prioritize digital access plus assisted account onboarding for adults with low education, low income, no internet use, and people living in low-inclusion countries.
-
-This means helping excluded adults both access digital channels and complete the practical steps needed to open and use an account.
-
-Priority groups:
-
-- adults with primary education or less
-- adults in the poorest income quintiles
-- adults who do not use the internet
-- rural residents
-- women in countries with large gender gaps
-- very low inclusion country clusters
-
-## Limitations
-
-This project is descriptive and predictive, not causal.
-
-Important limitations:
-
-- observational survey data cannot prove policy impact
-- country-level clustering depends on selected features
-- model predictions depend on survey variables and missingness patterns
-- survey weights are used in EDA but not yet in model fitting
-- account ownership is only one measure of financial inclusion
-- the project does not estimate treatment effects
-
-## Repository structure
+## Repository Structure
 
 ```text
 data/
-  raw/                 # ignored raw downloads
-  interim/             # ignored cleaned intermediate data
-  processed/           # ignored model-ready data
+  raw/                 # local raw downloads, gitignored
+  interim/             # local cleaned intermediate data, gitignored
+  processed/           # local model-ready outputs, gitignored
 
-figures/               # selected committed visuals
-
-models/                # ignored trained model files
-
-notebooks/
-  01_microdata_inspection.ipynb
-  02_first_eda.ipynb
-
-references/
-  data_sources.md
-  data_inventory.csv
-  dataset_decision.md
-  initial_variable_map.csv
-  microdata_column_notes.md
-
-reports/
-  first_eda_summary.md
-  model_table_quality.md
-  baseline_model_results.md
-  xgboost_model_results.md
-  model_comparison.md
-  threshold_analysis.md
-  shap_summary.md
-  country_clusters.md
-  policy_recommendation.md
-  final_project_summary.md
-
-src/
-  clean_microdata.py
-  build_model_table.py
-  train_baseline_model.py
-  train_xgboost_model.py
-  compare_models.py
-  analyze_thresholds.py
-  explain_xgboost_shap.py
-  build_country_profiles.py
-  cluster_countries.py
+figures/               # selected committed figures for GitHub rendering
+models/                # local trained models, gitignored
+notebooks/             # exploratory notebooks
+references/            # project notes and source documentation
+reports/               # Markdown reports and summaries
+src/                   # runnable modules
 ```
 
-## Reproduce the project
+## Reproduce
 
-Create the environment and install dependencies:
+Install dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Place the raw Global Findex 2025 microdata CSV at:
+Place the raw CSV at:
 
 ```text
 data/raw/global_findex_2025_microdata/findex_microdata_2025_labelled_update112425.csv
 ```
 
-Run the project pipeline:
+Run the project step by step:
 
 ```bash
 python -m src.clean_microdata
 python -m src.build_model_table
+python -m src.make_model_table_report
 python -m src.make_first_eda_report
 python -m src.make_first_eda_figures
 python -m src.train_baseline_model
@@ -290,19 +142,30 @@ python -m src.cluster_countries
 python -m src.make_policy_recommendation
 ```
 
-## Main reports
+The heavier steps are `train_xgboost_model` and `explain_xgboost_shap`. Several of these commands overwrite local generated artifacts in `data/`, `models/`, `reports/`, and `figures/`.
 
-Start here:
+## Main Reports
 
 - [`reports/final_project_summary.md`](reports/final_project_summary.md)
-- [`reports/policy_recommendation.md`](reports/policy_recommendation.md)
+- [`reports/project_brief.md`](reports/project_brief.md)
 - [`reports/model_comparison.md`](reports/model_comparison.md)
 - [`reports/threshold_analysis.md`](reports/threshold_analysis.md)
-- [`reports/shap_summary.md`](reports/shap_summary.md)
+- [`reports/policy_recommendation.md`](reports/policy_recommendation.md)
 - [`reports/country_clusters.md`](reports/country_clusters.md)
 
-## Final takeaway
+## Limitations
 
-Financial exclusion is concentrated among adults with lower education, lower income, no internet use, rural residence, and people living in low-inclusion countries.
+- The project is predictive and descriptive, not causal.
+- Survey weights are used in the EDA and country profiles, but not in model fitting.
+- Calibration is not yet evaluated, so predicted scores should be read mainly as ranking signals.
+- Validation uses a standard train/test split rather than grouped country-level splits.
+- Account ownership is only one slice of financial inclusion; it does not capture quality of use or resilience on its own.
+- Threshold choice is a program tradeoff, not a single correct setting.
 
-The best portfolio-level recommendation is a targeted digital access and assisted onboarding strategy, adapted by country cluster and evaluated with explicit threshold tradeoffs.
+## What I Would Improve Next
+
+- Evaluate calibration and score reliability directly.
+- Test country-grouped validation to check cross-economy generalization.
+- Add subgroup performance slices for the excluded class.
+- Use barrier variables more directly in a follow-up descriptive analysis.
+- Compare against a survey-weighted modeling approach if the use case requires population-level targeting claims.

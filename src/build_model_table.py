@@ -1,27 +1,18 @@
 import pandas as pd
 
-from src.config import INTERIM_DIR, PROCESSED_DIR
+from src.config import INTERIM_DIR, MODEL_FEATURES, PROCESSED_DIR
 
-IN_PATH=INTERIM_DIR / 'microdata_core.parquet'
-OUT_PATH=PROCESSED_DIR / 'model_table.parquet'
+IN_PATH = INTERIM_DIR / "microdata_core.parquet"
+OUT_PATH = PROCESSED_DIR / "model_table.parquet"
 
-ID_COLS=[
-    'respondent_id',
-    'economy',
-    'economy_code',
-    'survey_weight',
+ID_COLS = [
+    "respondent_id",
+    "economy",
+    "economy_code",
+    "survey_weight",
 ]
 
-FEATURE_COLS=[
-    'is_female',
-    'age',
-    'education_level',
-    'income_quintile',
-    'is_employed',
-    'is_urban',
-    'uses_internet',
-    'region',
-]
+FEATURE_COLS = MODEL_FEATURES.copy()
 
 TARGET_COL='has_account'
 

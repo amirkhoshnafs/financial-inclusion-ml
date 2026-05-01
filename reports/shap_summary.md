@@ -38,17 +38,17 @@ The model predicts probability of account ownership:
 
 ## Interpretation
 
-The largest SHAP values identify the features that most influence the XGBoost model predictions.
+The largest SHAP values identify the features that move the model predictions the most on average.
 
-Because the model uses one-hot encoded categorical variables, some original concepts appear as multiple feature rows.
+Because the model uses one-hot encoded categorical variables, one underlying concept can show up as several rows in the table.
 
 The SHAP results should be interpreted as predictive associations, not causal effects.
 
 ## Policy caution
 
-A feature with high SHAP importance is useful for understanding model predictions, but it does not prove that changing that feature would cause account ownership to increase.
+A feature with high SHAP importance is useful for understanding model behavior, but it does not show that changing that feature would cause account ownership to rise.
 
-For example, if internet use is important, that suggests digital access is strongly associated with inclusion in the model. It does not prove that providing internet access alone would cause account ownership.
+For example, if internet use is important, that tells us digital access is tightly associated with inclusion in the model. It does not prove that providing internet access alone would raise account ownership.
 
 ## Generated figures
 

@@ -17,7 +17,16 @@ from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
-from src.config import MODELS_DIR, PROCESSED_DIR, REPORTS_DIR, RANDOM_STATE
+from src.config import (
+    MODELS_DIR,
+    MODEL_BINARY_FEATURES,
+    MODEL_CATEGORICAL_FEATURES,
+    MODEL_FEATURES,
+    MODEL_NUMERIC_FEATURES,
+    PROCESSED_DIR,
+    REPORTS_DIR,
+    RANDOM_STATE,
+)
 
 IN_PATH=PROCESSED_DIR / 'model_table.parquet'
 MODEL_PATH=MODELS_DIR / 'baseline_logistic_regression.joblib'
@@ -25,24 +34,10 @@ REPORT_PATH=REPORTS_DIR / 'baseline_model_results.md'
 
 TARGET_COL='target'
 
-NUMERIC_FEATURES=[
-    'age',
-]
-
-BINARY_FEATURES=[
-    'is_female',
-    'is_employed',
-    'is_urban',
-    'uses_internet',
-]
-
-CATEGORICAL_FEATURES=[
-    'education_level',
-    'income_quintile',
-    'region',
-]
-
-FEATURES=NUMERIC_FEATURES + BINARY_FEATURES + CATEGORICAL_FEATURES
+NUMERIC_FEATURES = MODEL_NUMERIC_FEATURES
+BINARY_FEATURES = MODEL_BINARY_FEATURES
+CATEGORICAL_FEATURES = MODEL_CATEGORICAL_FEATURES
+FEATURES = MODEL_FEATURES
 
 METADATA_COLS=[
     'respondent_id',
@@ -191,7 +186,7 @@ def make_report(metrics):
         '',
         '## Leakage controls',
         '',
-        'The baseline model excludes account components and downstream financial behavior variables such as mobile money account ownership, financial institution account ownership, saving, borrowing, and digital payment behavior.',
+        'The baseline model excludes account components and downstream financial behavior variables such as mobile money ownership, formal saving, borrowing, and digital payment use.',
         '',
         '## Metrics',
         '',
@@ -217,18 +212,18 @@ def make_report(metrics):
         '',
         '## Interpretation notes',
         '',
-        'This is a baseline model, not the final model.',
+        'This is the reference model for the project, not a claim that a linear specification is the best possible one.',
         '',
-        'Because the model uses `class_weight=\"balanced\"`, it gives more attention to the excluded class than a purely accuracy-focused model would.',
+        'Because the model uses `class_weight=\"balanced\"`, it puts more weight on the excluded class than a plain accuracy-first fit would.',
         '',
-        'Because this project focuses on financial exclusion, excluded-class precision and recall are reported separately.',
+        'Because the project is interested in exclusion as well as inclusion, I report the excluded-class precision and recall separately.',
         '',
-        'The next modeling step should compare this logistic regression baseline against one tree-based model.',
+        'The useful role of this baseline is to show how far a simple, interpretable model gets before moving to a tree-based model.',
         '',
         '## Limitations',
         '',
         '- This model is predictive, not causal.',
-        '- It uses a limited first-pass feature set.',
+        '- The feature set is intentionally narrow to reduce leakage and keep the baseline interpretable.',
         '- Survey weights are retained in the data but not yet used in model fitting.',
         '- The default 0.5 threshold may not be the best policy threshold.',
     ])

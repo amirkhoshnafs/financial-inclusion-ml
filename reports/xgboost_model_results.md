@@ -38,11 +38,11 @@ Categorical features:
 - colsample_bytree: 0.8
 - tree_method: hist
 
-These settings are intentionally conservative. The goal is a clean advanced baseline, not heavy tuning.
+These settings are intentionally conservative. The goal is a modest tree-based benchmark, not an aggressively tuned leaderboard model.
 
 ## Leakage controls
 
-The model excludes account components and downstream financial behavior variables such as mobile money account ownership, financial institution account ownership, saving, borrowing, and digital payment behavior.
+The model excludes account components and downstream financial behavior variables such as mobile money ownership, formal saving, borrowing, and digital payment use.
 
 ## Metrics
 
@@ -68,16 +68,16 @@ The model excludes account components and downstream financial behavior variable
 
 ## Interpretation notes
 
-This model should be compared against the logistic regression baseline.
+This model should be read against the logistic regression baseline rather than in isolation.
 
-Because this project focuses on financial exclusion, excluded-class precision and recall are reported separately.
+Because the project cares about targeting excluded adults, excluded-class precision and recall are reported separately.
 
-A higher AUC than the logistic baseline would suggest that nonlinear patterns or interactions add predictive value.
+A higher AUC than the logistic baseline suggests that some nonlinear patterns or interactions are helping, even with the same compact feature set.
 
 ## Limitations
 
 - This model is predictive, not causal.
-- It uses the same limited first-pass feature set as the logistic baseline.
+- It uses the same deliberately limited feature set as the logistic baseline.
 - Survey weights are retained in the data but not yet used in model fitting.
 - The default 0.5 threshold may not be the best policy threshold.
-- The model is not heavily tuned.
+- The model is only lightly tuned, so the reported lift should be treated as a modest benchmark rather than a final ceiling.

@@ -1,9 +1,9 @@
 import pandas as pd
 
-from src.config import RAW_DIR, INTERIM_DIR
+from src.config import INTERIM_DIR, RAW_MICRODATA_PATH
 
-MICRODATA_PATH=RAW_DIR / 'global_findex_2025_microdata' / 'findex_microdata_2025_labelled_update112425.csv'
-OUT_PATH=INTERIM_DIR / 'microdata_core.parquet'
+MICRODATA_PATH = RAW_MICRODATA_PATH
+OUT_PATH = INTERIM_DIR / "microdata_core.parquet"
 
 RAW_COLS=[
     'year',

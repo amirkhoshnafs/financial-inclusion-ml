@@ -5,7 +5,17 @@ import pandas as pd
 from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
 
-from src.config import FIGURES_DIR, MODELS_DIR, PROCESSED_DIR, REPORTS_DIR, RANDOM_STATE
+from src.config import (
+    FIGURES_DIR,
+    MODELS_DIR,
+    MODEL_BINARY_FEATURES,
+    MODEL_CATEGORICAL_FEATURES,
+    MODEL_FEATURES,
+    MODEL_NUMERIC_FEATURES,
+    PROCESSED_DIR,
+    REPORTS_DIR,
+    RANDOM_STATE,
+)
 
 IN_PATH=PROCESSED_DIR / 'model_table.parquet'
 MODEL_PATH=MODELS_DIR / 'xgboost_account_model.joblib'
@@ -14,16 +24,7 @@ FIGURE_PATH=FIGURES_DIR / 'xgboost_threshold_tradeoff.png'
 
 TARGET_COL='target'
 
-FEATURES=[
-    'is_female',
-    'age',
-    'education_level',
-    'income_quintile',
-    'is_employed',
-    'is_urban',
-    'uses_internet',
-    'region',
-]
+FEATURES = MODEL_FEATURES
 
 
 def load_data():
@@ -33,11 +34,9 @@ def load_data():
 def prepare_features(df):
     x=df[FEATURES].copy()
 
-    numeric_features=['age', 'is_female', 'income_quintile', 'is_employed', 'is_urban', 'uses_internet']
-    categorical_features=['education_level', 'region']
-
-    x[numeric_features]=x[numeric_features].astype(float)
-    x[categorical_features]=x[categorical_features].astype(object)
+    x[MODEL_NUMERIC_FEATURES] = x[MODEL_NUMERIC_FEATURES].astype(float)
+    x[MODEL_BINARY_FEATURES] = x[MODEL_BINARY_FEATURES].astype(float)
+    x[MODEL_CATEGORICAL_FEATURES] = x[MODEL_CATEGORICAL_FEATURES].astype(object)
     x=x.mask(x.isna(), np.nan)
 
     return x.infer_objects(copy=False)
@@ -165,7 +164,7 @@ def make_report(table):
         '',
         '## Candidate thresholds',
         '',
-        'Candidate thresholds are selected using simple practical constraints so the report does not recommend extreme endpoints.',
+        'These candidate thresholds are not universal best settings. They are just useful operating points for different program tradeoffs.',
         '',
         '### Reach-oriented threshold',
         '',
@@ -173,7 +172,7 @@ def make_report(table):
         f'- excluded recall: {fmt_pct(reach["excluded_recall"])}',
         f'- excluded precision: {fmt_pct(reach["excluded_precision"])}',
         '',
-        'Use this when the policy goal is to reach as many excluded people as possible.',
+        'Use this when the priority is broad outreach and the program can tolerate more false positives.',
         '',
         '### Efficiency-oriented threshold',
         '',
@@ -181,7 +180,7 @@ def make_report(table):
         f'- excluded precision: {fmt_pct(efficiency["excluded_precision"])}',
         f'- excluded recall: {fmt_pct(efficiency["excluded_recall"])}',
         '',
-        'Use this when the policy goal is to avoid targeting people who are already included.',
+        'Use this when the priority is targeting efficiency and the program can only follow up on a smaller group.',
         '',
         '### Balanced threshold',
         '',
@@ -189,7 +188,7 @@ def make_report(table):
         f'- excluded precision: {fmt_pct(balanced["excluded_precision"])}',
         f'- excluded recall: {fmt_pct(balanced["excluded_recall"])}',
         '',
-        'Use this when the project needs a compromise between reach and targeting efficiency.',
+        'Use this when the project needs a middle ground between reach and targeting efficiency.',
         '',
         '## Interpretation',
         '',
@@ -197,11 +196,11 @@ def make_report(table):
         '',
         'Higher thresholds predict fewer people as account owners and more people as excluded.',
         '',
-        'Because the project focuses on financial exclusion, threshold choice should be tied to policy goals rather than selected only from default model settings.',
+        'Because the project focuses on financial exclusion, threshold choice should be tied to the intervention design rather than left at the library default.',
         '',
         '## Recommendation',
         '',
-        'Use XGBoost probabilities for ranking risk of exclusion rather than relying only on the default 0.5 threshold.',
+        'Use the XGBoost scores mainly for ranking exclusion risk, then pick a threshold that matches budget and outreach constraints.',
         '',
         'For the portfolio project, report the default threshold metrics but also show the threshold tradeoff table.',
     ])

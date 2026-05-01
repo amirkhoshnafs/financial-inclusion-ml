@@ -2,15 +2,15 @@
 
 ## Project question
 
-Which groups are financially excluded, what predicts inclusion, and which policy intervention would likely help most?
+Which groups are more likely to be financially excluded, what predicts account ownership, and what intervention looks most plausible to test next?
 
 ## Executive summary
 
-The strongest recommendation from this analysis is:
+The most plausible intervention to test, given the evidence in this repo, is:
 
 > Prioritize digital access and assisted account onboarding for adults with low education, low income, no internet use, and people living in low-inclusion countries.
 
-This should not be interpreted as a causal claim. The project shows descriptive and predictive evidence that these groups are strongly associated with financial exclusion.
+This is not a causal claim. The repo only provides descriptive patterns and predictive signals about which adults are more likely to be excluded.
 
 ## Evidence base
 
@@ -86,7 +86,7 @@ The SHAP analysis suggests that the strongest predictive drivers are:
 7. gender
 8. urbanicity
 
-This supports a policy story focused on digital access, education/literacy, income vulnerability, and country context.
+Taken together, that points to digital access, education, income vulnerability, and country context as the most credible places to focus interpretation.
 
 ## Threshold choice for policy targeting
 
@@ -100,7 +100,7 @@ Threshold analysis shows three useful policy options:
 | Efficiency | 0.40 | 70.2% | 30.5% | target fewer people, avoid wasting resources |
 | Balanced | 0.70 | 52.5% | 74.4% | compromise between reach and efficiency |
 
-For a public inclusion campaign, the balanced or reach-oriented threshold is more appropriate than the default 0.5 threshold.
+For a broad inclusion campaign, the balanced or reach-oriented threshold is easier to defend than the default 0.5 threshold.
 
 ## Recommended intervention
 
@@ -110,7 +110,7 @@ Use a combined intervention:
 
 > Digital access plus assisted account onboarding.
 
-This means helping excluded adults both access digital channels and complete the practical steps needed to open and use an account.
+In practical terms, that means helping excluded adults access digital channels and complete the paperwork, onboarding, and first-use steps required to keep an account active.
 
 The intervention should focus first on:
 
@@ -153,12 +153,12 @@ The most financially excluded groups are adults with low education, low income, 
 
 The strongest predictors of inclusion are country/region context, internet use, employment, education, age, and income.
 
-The most plausible policy intervention is a targeted digital access and assisted account onboarding strategy, adapted by country cluster and evaluated with explicit threshold tradeoffs.
+The most plausible intervention coming out of this analysis is a targeted digital access and assisted account onboarding strategy, adapted by country profile and evaluated with explicit threshold tradeoffs.
 
 ## Next analytical improvements
 
 - Analyze account barrier variables directly, such as distance, cost, documentation, and trust.
 - Add subgroup-specific model evaluation.
-- Add calibration analysis.
+- Add calibration analysis so the predicted scores can be interpreted more directly as risks.
 - Add SHAP local examples for representative excluded profiles.
-- Build a Streamlit dashboard for exploration.
+- Revisit validation with country-grouped splits to test how well the model generalizes across economies.

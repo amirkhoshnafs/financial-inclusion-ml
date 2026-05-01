@@ -1,20 +1,11 @@
 import pandas as pd
 
-from src.config import PROCESSED_DIR, REPORTS_DIR
+from src.config import MODEL_FEATURES, PROCESSED_DIR, REPORTS_DIR
 
 IN_PATH=PROCESSED_DIR / 'model_table.parquet'
 OUT_PATH=REPORTS_DIR / 'model_table_quality.md'
 
-FEATURE_COLS=[
-    'is_female',
-    'age',
-    'education_level',
-    'income_quintile',
-    'is_employed',
-    'is_urban',
-    'uses_internet',
-    'region',
-]
+FEATURE_COLS = MODEL_FEATURES
 
 ID_COLS=[
     'respondent_id',
@@ -116,7 +107,7 @@ def main():
         '- formal borrowing behavior',
         '- receiving wages, transfers, pensions, or agricultural payments through accounts',
         '',
-        'This keeps the first baseline model focused on background characteristics rather than financial behaviors that may happen after account ownership.',
+        'I kept the first feature set intentionally limited so the model uses background characteristics rather than behaviors that are likely downstream of already having an account.',
         '',
         '## Current modeling status',
         '',

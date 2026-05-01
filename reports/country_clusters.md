@@ -196,9 +196,9 @@ The goal is to identify groups of countries with similar inclusion patterns, not
 
 ## Interpretation notes
 
-- Clusters are descriptive groups, not causal categories.
+- Clusters are descriptive groupings, not causal categories.
 - Cluster labels are arbitrary numbers assigned by KMeans.
-- The clusters depend on the selected country-level features.
+- The clusters depend on the selected country-level features and the choice of four clusters.
 - Missing country-level subgroup rates are median-imputed before clustering.
 
 ## Generated figure

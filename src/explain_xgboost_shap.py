@@ -8,7 +8,17 @@ import shap
 from sklearn.model_selection import train_test_split
 from xgboost import DMatrix
 
-from src.config import FIGURES_DIR, MODELS_DIR, PROCESSED_DIR, REPORTS_DIR, RANDOM_STATE
+from src.config import (
+    FIGURES_DIR,
+    MODELS_DIR,
+    MODEL_BINARY_FEATURES,
+    MODEL_CATEGORICAL_FEATURES,
+    MODEL_FEATURES,
+    MODEL_NUMERIC_FEATURES,
+    PROCESSED_DIR,
+    REPORTS_DIR,
+    RANDOM_STATE,
+)
 
 IN_PATH=PROCESSED_DIR / 'model_table.parquet'
 MODEL_PATH=MODELS_DIR / 'xgboost_account_model.joblib'
@@ -19,16 +29,7 @@ BEESWARM_PATH=FIGURES_DIR / 'shap_beeswarm.png'
 
 TARGET_COL='target'
 
-FEATURES=[
-    'is_female',
-    'age',
-    'education_level',
-    'income_quintile',
-    'is_employed',
-    'is_urban',
-    'uses_internet',
-    'region',
-]
+FEATURES = MODEL_FEATURES
 
 SAMPLE_SIZE=3000
 
@@ -40,11 +41,9 @@ def load_data():
 def prepare_features(df):
     x=df[FEATURES].copy()
 
-    numeric_features=['age', 'is_female', 'income_quintile', 'is_employed', 'is_urban', 'uses_internet']
-    categorical_features=['education_level', 'region']
-
-    x[numeric_features]=x[numeric_features].astype(float)
-    x[categorical_features]=x[categorical_features].astype(object)
+    x[MODEL_NUMERIC_FEATURES] = x[MODEL_NUMERIC_FEATURES].astype(float)
+    x[MODEL_BINARY_FEATURES] = x[MODEL_BINARY_FEATURES].astype(float)
+    x[MODEL_CATEGORICAL_FEATURES] = x[MODEL_CATEGORICAL_FEATURES].astype(object)
     x=x.mask(x.isna(), np.nan)
 
     return x.infer_objects(copy=False)
@@ -177,17 +176,17 @@ def make_report(importance):
         '',
         '## Interpretation',
         '',
-        'The largest SHAP values identify the features that most influence the XGBoost model predictions.',
+        'The largest SHAP values identify the features that move the model predictions the most on average.',
         '',
-        'Because the model uses one-hot encoded categorical variables, some original concepts appear as multiple feature rows.',
+        'Because the model uses one-hot encoded categorical variables, one underlying concept can show up as several rows in the table.',
         '',
         'The SHAP results should be interpreted as predictive associations, not causal effects.',
         '',
         '## Policy caution',
         '',
-        'A feature with high SHAP importance is useful for understanding model predictions, but it does not prove that changing that feature would cause account ownership to increase.',
+        'A feature with high SHAP importance is useful for understanding model behavior, but it does not show that changing that feature would cause account ownership to rise.',
         '',
-        'For example, if internet use is important, that suggests digital access is strongly associated with inclusion in the model. It does not prove that providing internet access alone would cause account ownership.',
+        'For example, if internet use is important, that tells us digital access is tightly associated with inclusion in the model. It does not prove that providing internet access alone would raise account ownership.',
         '',
         '## Generated figures',
         '',

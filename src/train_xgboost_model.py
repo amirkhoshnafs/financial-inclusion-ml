@@ -17,7 +17,16 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from xgboost import XGBClassifier
 
-from src.config import MODELS_DIR, PROCESSED_DIR, REPORTS_DIR, RANDOM_STATE
+from src.config import (
+    MODELS_DIR,
+    MODEL_BINARY_FEATURES,
+    MODEL_CATEGORICAL_FEATURES,
+    MODEL_FEATURES,
+    MODEL_NUMERIC_FEATURES,
+    PROCESSED_DIR,
+    REPORTS_DIR,
+    RANDOM_STATE,
+)
 
 IN_PATH=PROCESSED_DIR / 'model_table.parquet'
 MODEL_PATH=MODELS_DIR / 'xgboost_account_model.joblib'
@@ -25,24 +34,10 @@ REPORT_PATH=REPORTS_DIR / 'xgboost_model_results.md'
 
 TARGET_COL='target'
 
-NUMERIC_FEATURES=[
-    'age',
-]
-
-BINARY_FEATURES=[
-    'is_female',
-    'is_employed',
-    'is_urban',
-    'uses_internet',
-]
-
-CATEGORICAL_FEATURES=[
-    'education_level',
-    'income_quintile',
-    'region',
-]
-
-FEATURES=NUMERIC_FEATURES + BINARY_FEATURES + CATEGORICAL_FEATURES
+NUMERIC_FEATURES = MODEL_NUMERIC_FEATURES
+BINARY_FEATURES = MODEL_BINARY_FEATURES
+CATEGORICAL_FEATURES = MODEL_CATEGORICAL_FEATURES
+FEATURES = MODEL_FEATURES
 
 
 def load_data():
@@ -200,11 +195,11 @@ def make_report(metrics):
         '- colsample_bytree: 0.8',
         '- tree_method: hist',
         '',
-        'These settings are intentionally conservative. The goal is a clean advanced baseline, not heavy tuning.',
+        'These settings are intentionally conservative. The goal here is a modest tree-based benchmark, not an aggressively tuned leaderboard model.',
         '',
         '## Leakage controls',
         '',
-        'The model excludes account components and downstream financial behavior variables such as mobile money account ownership, financial institution account ownership, saving, borrowing, and digital payment behavior.',
+        'The model excludes account components and downstream financial behavior variables such as mobile money ownership, formal saving, borrowing, and digital payment use.',
         '',
         '## Metrics',
         '',
@@ -230,19 +225,19 @@ def make_report(metrics):
         '',
         '## Interpretation notes',
         '',
-        'This model should be compared against the logistic regression baseline.',
+        'This model should be read against the logistic regression baseline rather than in isolation.',
         '',
-        'Because this project focuses on financial exclusion, excluded-class precision and recall are reported separately.',
+        'Because the project cares about targeting excluded adults, excluded-class precision and recall are reported separately.',
         '',
-        'A higher AUC than the logistic baseline would suggest that nonlinear patterns or interactions add predictive value.',
+        'A higher AUC than the logistic baseline suggests that some nonlinear patterns or interactions are helping, even with the same compact feature set.',
         '',
         '## Limitations',
         '',
         '- This model is predictive, not causal.',
-        '- It uses the same limited first-pass feature set as the logistic baseline.',
+        '- It uses the same deliberately limited feature set as the logistic baseline.',
         '- Survey weights are retained in the data but not yet used in model fitting.',
         '- The default 0.5 threshold may not be the best policy threshold.',
-        '- The model is not heavily tuned.',
+        '- The model is only lightly tuned, so the reported lift should be treated as a modest benchmark rather than a final ceiling.',
     ])
 
     REPORT_PATH.write_text('\n'.join(lines), encoding='utf-8')
