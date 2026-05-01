@@ -1,0 +1,60 @@
+# Model comparison
+
+## Purpose
+
+This report compares the logistic regression baseline against the XGBoost model for predicting account ownership.
+
+The comparison uses the committed model result reports:
+
+- `reports/baseline_model_results.md`
+- `reports/xgboost_model_results.md`
+
+## Metric comparison
+
+| metric | logistic regression | XGBoost | difference |
+|---|---:|---:|---:|
+| train AUC | 0.822 | 0.833 | 0.011 |
+| test AUC | 0.822 | 0.831 | 0.009 |
+| accuracy | 73.6% | 79.2% | 5.6% |
+| precision | 90.1% | 82.8% | -7.3% |
+| recall | 72.2% | 90.6% | 18.4% |
+| F1 | 0.802 | 0.865 | 0.063 |
+| excluded precision | 49.8% | 64.0% | 14.2% |
+| excluded recall | 77.7% | 47.1% | -30.6% |
+| predicted positive rate | 59.1% | 80.7% | 21.6% |
+
+## Main interpretation
+
+- XGBoost improves test AUC by 0.009.
+- XGBoost improves F1 by 0.063.
+- XGBoost improves excluded-class precision by 14.2 percentage points.
+- XGBoost lowers excluded-class recall by 30.6 percentage points.
+
+This means XGBoost performs better overall, but the default 0.5 threshold changes the policy tradeoff.
+
+XGBoost is more precise when it predicts exclusion, but it misses more actually excluded respondents than the logistic baseline.
+
+## Policy interpretation
+
+For a policy targeting use case, excluded-class recall matters because missing excluded people means missing people who may need support.
+
+For a limited-budget targeting use case, excluded-class precision matters because false positives may waste resources.
+
+The better threshold depends on the policy goal:
+
+- maximize reach: favor higher excluded recall
+- maximize targeting efficiency: favor higher excluded precision
+- balanced targeting: evaluate multiple thresholds
+
+## Model choice
+
+Recommended project use:
+
+- use logistic regression as the transparent baseline
+- use XGBoost as the stronger predictive model
+- use XGBoost for SHAP explanations
+- do not treat the default 0.5 threshold as final for policy targeting
+
+## Current conclusion
+
+XGBoost is the stronger overall model, but threshold tuning is needed before making policy-style targeting claims.
